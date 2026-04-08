@@ -8,7 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const textInput = document.getElementById('text-input');
     const fontSizeInput = document.getElementById('font-size');
-    
+    const btnFontMinus = document.getElementById('btn-font-minus');
+    const btnFontPlus = document.getElementById('btn-font-plus');
+
     const bgColorInput = document.getElementById('bg-color');
     const bgColorInput2 = document.getElementById('bg-color-2');
     const bgModeGroup = document.getElementById('bg-mode-group');
@@ -111,6 +113,22 @@ document.addEventListener('DOMContentLoaded', () => {
             previewText.setAttribute('font-size', size);
             updateText(); // 줄 간격 재계산을 위해 호출
         }
+    });
+
+    btnFontMinus.addEventListener('click', () => {
+        const currentSize = parseInt(fontSizeInput.value) || 80;
+        const newSize = Math.max(10, currentSize - 10);
+        fontSizeInput.value = newSize;
+        previewText.setAttribute('font-size', newSize);
+        updateText();
+    });
+
+    btnFontPlus.addEventListener('click', () => {
+        const currentSize = parseInt(fontSizeInput.value) || 80;
+        const newSize = Math.min(500, currentSize + 10);
+        fontSizeInput.value = newSize;
+        previewText.setAttribute('font-size', newSize);
+        updateText();
     });
 
     // 배경색 실시간 반영

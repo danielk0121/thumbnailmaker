@@ -40,7 +40,11 @@
                     <textarea id="text-input" placeholder="썸네일 제목 입력" rows="3">여기에 제목을 입력하세요</textarea>
                     
                     <label for="font-size">글자 크기 (px)</label>
-                    <input type="number" id="font-size" min="10" max="500" value="80">
+                    <div class="flex-row font-size-control">
+                        <button id="btn-font-minus">-</button>
+                        <input type="number" id="font-size" min="10" max="500" value="80">
+                        <button id="btn-font-plus">+</button>
+                    </div>
                 </div>
 
                 <!-- 배경 및 디자인 설정 -->
