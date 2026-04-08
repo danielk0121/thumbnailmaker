@@ -194,44 +194,67 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 이미지 내보내기 함수
     const exportImage = (format) => {
-        const svgData = new XMLSerializer().serializeToString(svg);
+        // 원본 SVG 복제 및 스타일 주입 (폰트 정보 유지 등)
+        const svgElement = svg.cloneNode(true);
+        const style = document.createElement('style');
+        style.textContent = `
+            text { font-family: sans-serif; font-weight: bold; }
+        `;
+        svgElement.prepend(style);
+
+        const svgData = new XMLSerializer().serializeToString(svgElement);
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         const img = new Image();
 
-        const w = widthInput.value;
-        const h = heightInput.value;
+        const w = parseInt(svg.getAttribute('width')) || 400;
+        const h = parseInt(svg.getAttribute('height')) || 400;
+        
         canvas.width = w;
         canvas.height = h;
 
+        // Blob 기반 URL 생성
         const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
         const url = URL.createObjectURL(svgBlob);
 
         img.onload = () => {
             if (format === 'jpg') {
-                ctx.fillStyle = '#ffffff'; // JPG용 배경색
+                ctx.fillStyle = '#ffffff';
                 ctx.fillRect(0, 0, w, h);
             }
-            ctx.drawImage(img, 0, 0);
-            const dataUrl = canvas.toDataURL(`image/${format === 'jpg' ? 'jpeg' : 'png'}`, 0.9);
+            
+            ctx.drawImage(img, 0, 0, w, h);
+            
+            const dataUrl = canvas.toDataURL(format === 'jpg' ? 'image/jpeg' : 'image/png', 1.0);
             const link = document.createElement('a');
-            link.download = `thumbnail.${format}`;
+            link.download = `thumbnail-${Date.now()}.${format}`;
             link.href = dataUrl;
+            document.body.appendChild(link);
             link.click();
+            document.body.removeChild(link);
             URL.revokeObjectURL(url);
         };
+
+        img.onerror = () => {
+            console.error('이미지 로드 실패');
+            alert('이미지 생성 중 오류가 발생했습니다.');
+            URL.revokeObjectURL(url);
+        };
+
         img.src = url;
     };
 
     // SVG 내보내기
     const exportSvg = () => {
         const svgData = new XMLSerializer().serializeToString(svg);
-        const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-        const url = URL.createObjectURL(svgBlob);
+        const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
-        link.download = 'thumbnail.svg';
+        link.download = `thumbnail-${Date.now()}.svg`;
         link.href = url;
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link);
         URL.revokeObjectURL(url);
     };
 
