@@ -18,11 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const gradientColor2Group = document.getElementById('gradient-color-2');
     const btnRandomColor = document.getElementById('btn-random-color');
     const btnRandomColor2 = document.getElementById('btn-random-color-2');
-    const borderRadiusGroup = document.getElementById('border-radius-group');
 
     // 상태 관리 (기본값)
     let currentBgMode = 'gradient';
-    let currentCornerStyle = 'sharp';
+    let currentCornerStyle = 'round';
 
     // 버튼 그룹 활성화 처리 함수
     const setupButtonGroup = (group, callback) => {
@@ -116,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     btnFontMinus.addEventListener('click', () => {
-        const currentSize = parseInt(fontSizeInput.value) || 80;
+        const currentSize = parseInt(fontSizeInput.value) || 70;
         const newSize = Math.max(10, currentSize - 10);
         fontSizeInput.value = newSize;
         previewText.setAttribute('font-size', newSize);
@@ -124,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     btnFontPlus.addEventListener('click', () => {
-        const currentSize = parseInt(fontSizeInput.value) || 80;
+        const currentSize = parseInt(fontSizeInput.value) || 70;
         const newSize = Math.min(500, currentSize + 10);
         fontSizeInput.value = newSize;
         previewText.setAttribute('font-size', newSize);
@@ -179,11 +178,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentCornerStyle === 'sharp') {
             bgRect.setAttribute('rx', 0);
             bgRect.setAttribute('ry', 0);
-            borderRadiusGroup.style.display = 'none';
         } else {
             bgRect.setAttribute('rx', radius);
             bgRect.setAttribute('ry', radius);
-            borderRadiusGroup.style.display = 'block';
         }
     };
 
