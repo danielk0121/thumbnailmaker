@@ -210,6 +210,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btnApplyRes.addEventListener('click', updateResolution);
 
+    // 날짜 포맷팅 함수 (YYYYMMDD-HHmmss)
+    const getFormattedDate = () => {
+        const now = new Date();
+        const offset = now.getTimezoneOffset() * 60000;
+        const localTime = new Date(now.getTime() - offset);
+        return localTime.toISOString()
+            .replace(/[-T:]/g, '')
+            .split('.')[0]
+            .replace(/(\d{8})(\d{6})/, '$1-$2');
+    };
+
     // 이미지 내보내기 함수
     const exportImage = (format) => {
         console.log(`[시작] ${format} 이미지 내보내기`);
@@ -255,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     const dataUrl = canvas.toDataURL(format === 'jpg' ? 'image/jpeg' : 'image/png', 1.0);
                     const link = document.createElement('a');
-                    link.download = `thumbnail-${Date.now()}.${format}`;
+                    link.download = `thumbnail-${getFormattedDate()}.${format}`;
                     link.href = dataUrl;
                     document.body.appendChild(link);
                     link.click();
@@ -288,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const dataUri = 'data:image/svg+xml;base64,' + encodedData;
             
             const link = document.createElement('a');
-            link.download = `thumbnail-${Date.now()}.svg`;
+            link.download = `thumbnail-${getFormattedDate()}.svg`;
             link.href = dataUri;
             document.body.appendChild(link);
             link.click();
