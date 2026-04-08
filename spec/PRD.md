@@ -1,31 +1,32 @@
 # 📝 Product Requirements Document (PRD)
 
 ## 1. 프로젝트 목적
-단순하고 직관적인 UI를 통해 누구나 쉽고 빠르게 텍스트 기반의 썸네일 이미지를 생성할 수 있는 웹 사이트 제작
+별도의 프레임워크 없이 순수 웹 기술(HTML, CSS, JS)과 SVG를 활용하여 빠르고 가벼운 텍스트 기반 썸네일 생성 도구 제작
 
 ## 2. 핵심 기능 요구사항
 ### 🎨 배경 및 디자인
-- **배경색 설정**: 단색 지정, 랜덤 색상 생성, 그라데이션 효과 지원
-- **라운드 처리**: 이미지 모서리의 둥글기(Border Radius) 조절 가능 여부 선택
+- **배경 설정**: 단색 지정, 랜덤 색상 생성, 그라데이션(Linear/Radial) 효과 지원
+- **모서리 라운드**: 이미지 모서리의 둥글기(Border Radius) 적용 여부 및 수치 조절
 
 ### ✍️ 텍스트 편집
-- **텍스트 입력**: 실시간 텍스트 입력 및 화면 반영
-- **크기 조절**: 텍스트의 크기 확대 및 축소 기능
+- **실시간 입력**: 사용자가 입력하는 텍스트가 즉시 썸네일에 반영
+- **크기 조절**: 슬라이더나 입력창을 통한 텍스트 크기 확대 및 축소
 
 ### 📐 해상도 및 규격
-- **커스텀 해상도**: 사용자가 가로, 세로 길이를 직접 입력하여 이미지 크기 지정
+- **커스텀 해상도**: 가로(Width), 세로(Height) 크기를 직접 지정하여 다양한 규격 대응
 
 ### 💾 파일 추출 및 저장
-- **이미지 저장**: PNG, JPG 포맷 다운로드 지원
-- **벡터 저장**: SVG 포맷 추출 지원
+- **이미지 저장**: Canvas API를 활용하여 PNG, JPG 포맷으로 다운로드
+- **벡터 저장**: SVG 소스 코드 추출 및 .svg 파일 다운로드 기능
 
 ## 3. 기술 스택 (Technical Spec)
-- **Frontend**: React (TypeScript)
-- **Styling**: Vanilla CSS
-- **Graphics**: HTML5 Canvas API, SVG
-- **Build Tool**: Vite
+- **Language**: JavaScript (Vanilla JS)
+- **Markup**: HTML5, SVG (Scalable Vector Graphics)
+- **Styling**: Vanilla CSS (CSS3)
+- **Directory**: `app/` 폴더 내 모든 소스 코드 관리
 
-## 4. 사용자 경험 (UX) 계획
-- 썸네일 생성 과정의 실시간 미리보기 제공
-- 직관적인 컨트롤 패널 구성
-- 모바일 및 데스크탑 환경 모두 대응
+## 4. 폴더 구조 계획
+- `app/index.html`: 메인 구조 및 UI
+- `app/style.css`: UI 디자인 및 레이아웃
+- `app/main.js`: SVG 조작 및 이미지 추출 로직
+- `spec/PRD.md`: 상세 기획 문서
