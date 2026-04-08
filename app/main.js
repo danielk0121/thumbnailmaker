@@ -11,12 +11,28 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const bgColorInput = document.getElementById('bg-color');
     const bgColorInput2 = document.getElementById('bg-color-2');
-    const bgModeSelect = document.getElementById('bg-mode');
+    const bgModeGroup = document.getElementById('bg-mode-group');
+    const cornerStyleGroup = document.getElementById('corner-style-group');
     const gradientColor2Group = document.getElementById('gradient-color-2');
     const btnRandomColor = document.getElementById('btn-random-color');
     const btnRandomColor2 = document.getElementById('btn-random-color-2');
-    const cornerStyleSelect = document.getElementById('corner-style');
     const borderRadiusGroup = document.getElementById('border-radius-group');
+
+    // 상태 관리 (기본값)
+    let currentBgMode = 'gradient';
+    let currentCornerStyle = 'sharp';
+
+    // 버튼 그룹 활성화 처리 함수
+    const setupButtonGroup = (group, callback) => {
+        const buttons = group.querySelectorAll('button');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                buttons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                callback(btn.dataset.value);
+            });
+        });
+    };
 
     const widthInput = document.getElementById('width-input');
     const heightInput = document.getElementById('height-input');
@@ -65,11 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 배경색 실시간 반영
     const updateBackground = () => {
-        const mode = bgModeSelect.value;
         const color1 = bgColorInput.value;
         const color2 = bgColorInput2.value;
 
-        if (mode === 'solid') {
+        if (currentBgMode === 'solid') {
             bgRect.setAttribute('fill', color1);
             gradientColor2Group.style.display = 'none';
         } else {
@@ -80,7 +95,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    bgModeSelect.addEventListener('change', updateBackground);
+    setupButtonGroup(bgModeGroup, (value) => {
+        currentBgMode = value;
+        updateBackground();
+    });
+
     bgColorInput.addEventListener('input', updateBackground);
     bgColorInput2.addEventListener('input', updateBackground);
 
@@ -99,10 +118,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 모서리 스타일 및 둥글기 실시간 반영
     const updateCornerStyle = () => {
-        const style = cornerStyleSelect.value;
         const radius = 40; // 40px 고정
 
-        if (style === 'sharp') {
+        if (currentCornerStyle === 'sharp') {
             bgRect.setAttribute('rx', 0);
             bgRect.setAttribute('ry', 0);
             borderRadiusGroup.style.display = 'none';
@@ -113,7 +131,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    cornerStyleSelect.addEventListener('change', updateCornerStyle);
+    setupButtonGroup(cornerStyleGroup, (value) => {
+        currentCornerStyle = value;
+        updateCornerStyle();
+    });
 
     // 해상도 실시간 반영
     const updateResolution = () => {
@@ -179,4 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 초기 실행
     updateText();
+    updateBackground();
+    updateCornerStyle();
 });
