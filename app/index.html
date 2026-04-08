@@ -66,8 +66,16 @@
                         </div>
                     </div>
 
-                    <label for="border-radius">모서리 둥글기 (<span id="border-radius-val">0</span>px)</label>
-                    <input type="range" id="border-radius" min="0" max="200" value="0">
+                    <label for="corner-style">모서리 스타일</label>
+                    <select id="corner-style">
+                        <option value="sharp" selected>각지게 (Sharp)</option>
+                        <option value="round">둥글게 (Round)</option>
+                    </select>
+
+                    <div id="border-radius-group" style="display: none;">
+                        <label for="border-radius">모서리 둥글기 (<span id="border-radius-val">0</span>px)</label>
+                        <input type="range" id="border-radius" min="0" max="200" value="0">
+                    </div>
                 </div>
 
                 <!-- 해상도 설정 -->

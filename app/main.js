@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const bgModeSelect = document.getElementById('bg-mode');
     const gradientColor2Group = document.getElementById('gradient-color-2');
     const btnRandomColor = document.getElementById('btn-random-color');
+    const cornerStyleSelect = document.getElementById('corner-style');
+    const borderRadiusGroup = document.getElementById('border-radius-group');
     const borderRadiusInput = document.getElementById('border-radius');
     const borderRadiusVal = document.getElementById('border-radius-val');
 
@@ -68,13 +70,25 @@ document.addEventListener('DOMContentLoaded', () => {
         updateBackground();
     });
 
-    // 모서리 라운드 실시간 반영
-    borderRadiusInput.addEventListener('input', (e) => {
-        const radius = e.target.value;
-        bgRect.setAttribute('rx', radius);
-        bgRect.setAttribute('ry', radius);
-        borderRadiusVal.textContent = radius;
-    });
+    // 모서리 스타일 및 둥글기 실시간 반영
+    const updateCornerStyle = () => {
+        const style = cornerStyleSelect.value;
+        const radius = borderRadiusInput.value;
+
+        if (style === 'sharp') {
+            bgRect.setAttribute('rx', 0);
+            bgRect.setAttribute('ry', 0);
+            borderRadiusGroup.style.display = 'none';
+        } else {
+            bgRect.setAttribute('rx', radius);
+            bgRect.setAttribute('ry', radius);
+            borderRadiusGroup.style.display = 'block';
+            borderRadiusVal.textContent = radius;
+        }
+    };
+
+    cornerStyleSelect.addEventListener('change', updateCornerStyle);
+    borderRadiusInput.addEventListener('input', updateCornerStyle);
 
     // 해상도 실시간 반영
     const updateResolution = () => {
