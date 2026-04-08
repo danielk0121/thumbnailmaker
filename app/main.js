@@ -212,15 +212,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 이미지 내보내기 함수
     const exportImage = (format) => {
-        // 원본 SVG 복제 및 스타일 주입 (폰트 정보 유지 등)
+        // 원본 SVG 복제
         const svgElement = svg.cloneNode(true);
+        
+        // Canvas에서 그릴 때 필요한 스타일을 인라인으로 강제 주입
         const style = document.createElement('style');
         style.textContent = `
-            text { font-family: sans-serif; font-weight: bold; }
+            text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: bold; }
+            tspan { alignment-baseline: central; }
         `;
         svgElement.prepend(style);
 
+        // SVG 데이터를 문자열로 변환하고 한글 깨짐 방지를 위해 인코딩 처리
         const svgData = new XMLSerializer().serializeToString(svgElement);
+        const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(svgBlob);
+
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         const img = new Image();
@@ -231,18 +238,20 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.width = w;
         canvas.height = h;
 
-        // Blob 기반 URL 생성
-        const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-        const url = URL.createObjectURL(svgBlob);
-
         img.onload = () => {
+            // 캔버스 초기화
+            ctx.clearRect(0, 0, w, h);
+            
+            // 배경 채우기 (특히 JPG일 때 투명 배경 방지)
             if (format === 'jpg') {
                 ctx.fillStyle = '#ffffff';
                 ctx.fillRect(0, 0, w, h);
             }
             
+            // 이미지를 캔버스에 그리기
             ctx.drawImage(img, 0, 0, w, h);
             
+            // 데이터 URL 생성 및 다운로드
             const dataUrl = canvas.toDataURL(format === 'jpg' ? 'image/jpeg' : 'image/png', 1.0);
             const link = document.createElement('a');
             link.download = `thumbnail-${Date.now()}.${format}`;
@@ -250,15 +259,18 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            
+            // 메모리 해제
             URL.revokeObjectURL(url);
         };
 
-        img.onerror = () => {
-            console.error('이미지 로드 실패');
-            alert('이미지 생성 중 오류가 발생했습니다.');
+        img.onerror = (e) => {
+            console.error('이미지 로드 실패:', e);
+            alert('이미지를 생성하는 동안 오류가 발생했습니다. 브라우저의 보안 설정을 확인해주세요.');
             URL.revokeObjectURL(url);
         };
 
+        // 이미지 소스 설정
         img.src = url;
     };
 
