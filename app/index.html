@@ -47,11 +47,11 @@
                 <div class="control-group">
                     <h3>🎨 디자인 설정</h3>
                     
-                    <label for="bg-mode">배경 모드</label>
-                    <select id="bg-mode">
-                        <option value="solid">단색 (Solid)</option>
-                        <option value="gradient" selected>그라데이션 (Gradient)</option>
-                    </select>
+                    <label>배경 모드</label>
+                    <div class="btn-group" id="bg-mode-group">
+                        <button type="button" data-value="solid">단색</button>
+                        <button type="button" data-value="gradient" class="active">그라데이션</button>
+                    </div>
 
                     <div id="color-controls">
                         <label for="bg-color">배경색 1</label>
@@ -69,11 +69,11 @@
                         </div>
                     </div>
 
-                    <label for="corner-style">모서리 스타일</label>
-                    <select id="corner-style">
-                        <option value="sharp" selected>각지게 (Sharp)</option>
-                        <option value="round">둥글게 (Round)</option>
-                    </select>
+                    <label>모서리 스타일</label>
+                    <div class="btn-group" id="corner-style-group">
+                        <button type="button" data-value="sharp" class="active">각지게</button>
+                        <button type="button" data-value="round">둥글게</button>
+                    </div>
 
                     <div id="border-radius-group" style="display: none; margin-bottom: 1rem;">
                         <p style="font-size: 0.8rem; color: var(--text-secondary);">둥글기: 40px (고정)</p>
