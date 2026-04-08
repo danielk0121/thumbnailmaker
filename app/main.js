@@ -14,10 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const bgModeSelect = document.getElementById('bg-mode');
     const gradientColor2Group = document.getElementById('gradient-color-2');
     const btnRandomColor = document.getElementById('btn-random-color');
+    const btnRandomColor2 = document.getElementById('btn-random-color-2');
     const cornerStyleSelect = document.getElementById('corner-style');
     const borderRadiusGroup = document.getElementById('border-radius-group');
-    const borderRadiusInput = document.getElementById('border-radius');
-    const borderRadiusVal = document.getElementById('border-radius-val');
 
     const widthInput = document.getElementById('width-input');
     const heightInput = document.getElementById('height-input');
@@ -87,18 +86,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 랜덤 색상 버튼
     btnRandomColor.addEventListener('click', () => {
-        const randomColor1 = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-        const randomColor2 = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-        
-        bgColorInput.value = randomColor1;
-        bgColorInput2.value = randomColor2;
+        const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+        bgColorInput.value = randomColor;
+        updateBackground();
+    });
+
+    btnRandomColor2.addEventListener('click', () => {
+        const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+        bgColorInput2.value = randomColor;
         updateBackground();
     });
 
     // 모서리 스타일 및 둥글기 실시간 반영
     const updateCornerStyle = () => {
         const style = cornerStyleSelect.value;
-        const radius = borderRadiusInput.value;
+        const radius = 40; // 40px 고정
 
         if (style === 'sharp') {
             bgRect.setAttribute('rx', 0);
@@ -108,12 +110,10 @@ document.addEventListener('DOMContentLoaded', () => {
             bgRect.setAttribute('rx', radius);
             bgRect.setAttribute('ry', radius);
             borderRadiusGroup.style.display = 'block';
-            borderRadiusVal.textContent = radius;
         }
     };
 
     cornerStyleSelect.addEventListener('change', updateCornerStyle);
-    borderRadiusInput.addEventListener('input', updateCornerStyle);
 
     // 해상도 실시간 반영
     const updateResolution = () => {
