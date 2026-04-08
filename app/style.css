@@ -58,16 +58,20 @@ main {
 }
 
 #canvas-container {
-    width: auto;
+    width: 100%;
+    max-width: fit-content;
     height: auto;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     background: #eee;
     line-height: 0;
     overflow: hidden;
+    margin: 0 auto;
 }
 
 #thumbnail-svg {
     display: block;
+    max-width: 100%;
+    height: auto;
 }
 .res-input-group button {
     height: 32px;
