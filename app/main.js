@@ -261,6 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     link.click();
                     document.body.removeChild(link);
                     console.log('[완료] 다운로드 트리거됨');
+                    alert('이미지가 다운로드 폴더에 저장되었습니다.');
                 } catch (canvasErr) {
                     console.error('[오류] 캔버스 데이터 추출 실패:', canvasErr);
                     alert('브라우저 보안 정책으로 인해 이미지 추출이 차단되었습니다. 웹 서버(GitHub Pages 등) 환경에서 실행해주세요.');
@@ -293,6 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
             link.click();
             document.body.removeChild(link);
             console.log('[완료] SVG 다운로드 트리거됨');
+            alert('SVG 파일이 다운로드 폴더에 저장되었습니다.');
         } catch (err) {
             console.error('[오류] SVG 내보내기 실패:', err);
         }
