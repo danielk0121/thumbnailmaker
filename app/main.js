@@ -316,6 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnExportSvg.addEventListener('click', exportSvg);
 
     // 초기 실행
+    textInput.value = '썸네일\n글자를\n입력해주세요';
     updateText();
     updateBackground();
     updateCornerStyle();
