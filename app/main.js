@@ -212,80 +212,90 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 이미지 내보내기 함수
     const exportImage = (format) => {
-        // 원본 SVG 복제
-        const svgElement = svg.cloneNode(true);
+        console.log(`[시작] ${format} 이미지 내보내기`);
         
-        // Canvas에서 그릴 때 필요한 스타일을 인라인으로 강제 주입
-        const style = document.createElement('style');
-        style.textContent = `
-            text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: bold; }
-            tspan { alignment-baseline: central; }
-        `;
-        svgElement.prepend(style);
-
-        // SVG 데이터를 문자열로 변환하고 한글 깨짐 방지를 위해 인코딩 처리
-        const svgData = new XMLSerializer().serializeToString(svgElement);
-        const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-        const url = URL.createObjectURL(svgBlob);
-
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        const img = new Image();
-
-        const w = parseInt(svg.getAttribute('width')) || 400;
-        const h = parseInt(svg.getAttribute('height')) || 400;
-        
-        canvas.width = w;
-        canvas.height = h;
-
-        img.onload = () => {
-            // 캔버스 초기화
-            ctx.clearRect(0, 0, w, h);
+        try {
+            // 원본 SVG 복제
+            const svgElement = svg.cloneNode(true);
             
-            // 배경 채우기 (특히 JPG일 때 투명 배경 방지)
-            if (format === 'jpg') {
-                ctx.fillStyle = '#ffffff';
-                ctx.fillRect(0, 0, w, h);
-            }
-            
-            // 이미지를 캔버스에 그리기
-            ctx.drawImage(img, 0, 0, w, h);
-            
-            // 데이터 URL 생성 및 다운로드
-            const dataUrl = canvas.toDataURL(format === 'jpg' ? 'image/jpeg' : 'image/png', 1.0);
-            const link = document.createElement('a');
-            link.download = `thumbnail-${Date.now()}.${format}`;
-            link.href = dataUrl;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            // 메모리 해제
-            URL.revokeObjectURL(url);
-        };
+            // 스타일 주입
+            const style = document.createElement('style');
+            style.textContent = `
+                text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: bold; }
+                tspan { alignment-baseline: central; }
+            `;
+            svgElement.prepend(style);
 
-        img.onerror = (e) => {
-            console.error('이미지 로드 실패:', e);
-            alert('이미지를 생성하는 동안 오류가 발생했습니다. 브라우저의 보안 설정을 확인해주세요.');
-            URL.revokeObjectURL(url);
-        };
+            // SVG 데이터를 문자열로 변환 후 Base64 인코딩 (로컬 환경 호환성 위함)
+            const svgData = new XMLSerializer().serializeToString(svgElement);
+            const encodedData = btoa(unescape(encodeURIComponent(svgData)));
+            const dataUri = 'data:image/svg+xml;base64,' + encodedData;
 
-        // 이미지 소스 설정
-        img.src = url;
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+
+            const w = parseInt(svg.getAttribute('width')) || 400;
+            const h = parseInt(svg.getAttribute('height')) || 400;
+            
+            canvas.width = w;
+            canvas.height = h;
+
+            img.onload = () => {
+                console.log('[성공] 이미지 로드 완료, 캔버스 렌더링 시작');
+                ctx.clearRect(0, 0, w, h);
+                
+                if (format === 'jpg') {
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, w, h);
+                }
+                
+                ctx.drawImage(img, 0, 0, w, h);
+                
+                try {
+                    const dataUrl = canvas.toDataURL(format === 'jpg' ? 'image/jpeg' : 'image/png', 1.0);
+                    const link = document.createElement('a');
+                    link.download = `thumbnail-${Date.now()}.${format}`;
+                    link.href = dataUrl;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    console.log('[완료] 다운로드 트리거됨');
+                } catch (canvasErr) {
+                    console.error('[오류] 캔버스 데이터 추출 실패:', canvasErr);
+                    alert('브라우저 보안 정책으로 인해 이미지 추출이 차단되었습니다. 웹 서버(GitHub Pages 등) 환경에서 실행해주세요.');
+                }
+            };
+
+            img.onerror = (e) => {
+                console.error('[오류] 이미지 변환 실패:', e);
+                alert('이미지를 생성하는 동안 오류가 발생했습니다.');
+            };
+
+            img.src = dataUri;
+        } catch (err) {
+            console.error('[오류] 실행 중 예외 발생:', err);
+        }
     };
 
     // SVG 내보내기
     const exportSvg = () => {
-        const svgData = new XMLSerializer().serializeToString(svg);
-        const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.download = `thumbnail-${Date.now()}.svg`;
-        link.href = url;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+        console.log('[시작] SVG 내보내기');
+        try {
+            const svgData = new XMLSerializer().serializeToString(svg);
+            const encodedData = btoa(unescape(encodeURIComponent(svgData)));
+            const dataUri = 'data:image/svg+xml;base64,' + encodedData;
+            
+            const link = document.createElement('a');
+            link.download = `thumbnail-${Date.now()}.svg`;
+            link.href = dataUri;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            console.log('[완료] SVG 다운로드 트리거됨');
+        } catch (err) {
+            console.error('[오류] SVG 내보내기 실패:', err);
+        }
     };
 
     btnExportPng.addEventListener('click', () => exportImage('png'));
