@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const widthInput = document.getElementById('width-input');
     const heightInput = document.getElementById('height-input');
+    const btnApplyRes = document.getElementById('btn-apply-res');
 
     const btnExportPng = document.getElementById('btn-export-png');
     const btnExportJpg = document.getElementById('btn-export-jpg');
@@ -136,20 +137,23 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCornerStyle();
     });
 
-    // 해상도 실시간 반영
+    // 해상도 반영
     const updateResolution = () => {
-        const w = widthInput.value;
-        const h = heightInput.value;
+        const w = parseInt(widthInput.value) || 400;
+        const h = parseInt(heightInput.value) || 400;
+        
         svg.setAttribute('width', w);
         svg.setAttribute('height', h);
         svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
-        // 텍스트 중앙 정렬 유지
+        
+        // 텍스트 위치 중앙 배치
         previewText.setAttribute('x', '50%');
         previewText.setAttribute('y', '50%');
+        
+        updateText(); // 줄 간격 및 수직 위치 재계산을 위해 호출
     };
 
-    widthInput.addEventListener('input', updateResolution);
-    heightInput.addEventListener('input', updateResolution);
+    btnApplyRes.addEventListener('click', updateResolution);
 
     // 이미지 내보내기 함수
     const exportImage = (format) => {

@@ -58,18 +58,25 @@ main {
 }
 
 #canvas-container {
-    width: 100%;
+    width: auto;
     height: auto;
-    max-width: 1280px;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     background: #eee;
     line-height: 0;
+    overflow: hidden;
 }
 
 #thumbnail-svg {
-    width: 100%;
-    height: auto;
     display: block;
+}
+
+.res-input-group {
+    align-items: flex-end;
+}
+
+.res-input-group button {
+    height: 40px;
+    margin-bottom: 1rem;
 }
 
 /* 컨트롤 패널 */
