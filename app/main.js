@@ -26,16 +26,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnExportJpg = document.getElementById('btn-export-jpg');
     const btnExportSvg = document.getElementById('btn-export-svg');
 
-    // 텍스트 실시간 반영
-    textInput.addEventListener('input', (e) => {
-        previewText.textContent = e.target.value;
-    });
+    // 텍스트 실시간 반영 및 다중 행 처리
+    const updateText = () => {
+        const lines = textInput.value.split('\n');
+        const fontSize = parseInt(fontSizeInput.value) || 0;
+        const lineHeight = 1.2;
+        
+        previewText.innerHTML = '';
+        
+        lines.forEach((line, index) => {
+            const tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+            tspan.textContent = line || ' '; // 빈 줄 방지
+            tspan.setAttribute('x', '50%');
+            
+            // 수직 중앙 정렬 보정: 
+            // 첫 번째 줄의 dy를 전체 높이의 절반만큼 위로 올리고, 
+            // 이후 줄은 lineHeight만큼 내림
+            if (index === 0) {
+                const totalHeightOffset = (lines.length - 1) * fontSize * lineHeight / 2;
+                tspan.setAttribute('dy', `-${totalHeightOffset}px`);
+            } else {
+                tspan.setAttribute('dy', `${fontSize * lineHeight}px`);
+            }
+            
+            previewText.appendChild(tspan);
+        });
+    };
+
+    textInput.addEventListener('input', updateText);
 
     // 글자 크기 실시간 반영
     fontSizeInput.addEventListener('input', (e) => {
         const size = e.target.value;
         if (size > 0) {
             previewText.setAttribute('font-size', size);
+            updateText(); // 줄 간격 재계산을 위해 호출
         }
     });
 
@@ -151,4 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnExportPng.addEventListener('click', () => exportImage('png'));
     btnExportJpg.addEventListener('click', () => exportImage('jpg'));
     btnExportSvg.addEventListener('click', exportSvg);
+
+    // 초기 실행
+    updateText();
 });

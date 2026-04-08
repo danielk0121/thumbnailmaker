@@ -111,6 +111,7 @@ label {
 
 input[type="text"],
 input[type="number"],
+textarea,
 select {
     width: 100%;
     padding: 0.6rem;
@@ -119,6 +120,12 @@ select {
     font-size: 1rem;
     margin-bottom: 1rem;
     background-color: white;
+    font-family: inherit;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
 }
 
 #gradient-color-2 {
