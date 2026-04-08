@@ -46,10 +46,24 @@
                 <!-- 배경 및 디자인 설정 -->
                 <div class="control-group">
                     <h3>🎨 디자인 설정</h3>
-                    <label for="bg-color">배경색</label>
-                    <div class="flex-row">
-                        <input type="color" id="bg-color" value="#6366f1">
-                        <button id="btn-random-color">랜덤 색상</button>
+                    
+                    <label for="bg-mode">배경 모드</label>
+                    <select id="bg-mode">
+                        <option value="solid">단색 (Solid)</option>
+                        <option value="gradient" selected>그라데이션 (Gradient)</option>
+                    </select>
+
+                    <div id="color-controls">
+                        <label for="bg-color">배경색 1</label>
+                        <div class="flex-row">
+                            <input type="color" id="bg-color" value="#6366f1">
+                            <button id="btn-random-color">랜덤 색상</button>
+                        </div>
+
+                        <div id="gradient-color-2">
+                            <label for="bg-color-2">배경색 2 (그라데이션 전용)</label>
+                            <input type="color" id="bg-color-2" value="#a855f7">
+                        </div>
                     </div>
 
                     <label for="border-radius">모서리 둥글기 (<span id="border-radius-val">0</span>px)</label>

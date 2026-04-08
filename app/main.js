@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const fontSizeInput = document.getElementById('font-size');
     
     const bgColorInput = document.getElementById('bg-color');
+    const bgColorInput2 = document.getElementById('bg-color-2');
+    const bgModeSelect = document.getElementById('bg-mode');
+    const gradientColor2Group = document.getElementById('gradient-color-2');
     const btnRandomColor = document.getElementById('btn-random-color');
     const borderRadiusInput = document.getElementById('border-radius');
     const borderRadiusVal = document.getElementById('border-radius-val');
@@ -34,21 +37,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 배경색 실시간 반영 (그라데이션 제거 후 단색으로 설정 가능하지만, 여기서는 그라데이션 첫번째 색상만 변경)
-    bgColorInput.addEventListener('input', (e) => {
-        const color = e.target.value;
-        stop1.style.stopColor = color;
-        // 단색 느낌을 주기 위해 두번째 색상도 비슷하게 변경하거나, 아예 단색 fill로 바꿀 수 있음
-    });
+    // 배경색 실시간 반영
+    const updateBackground = () => {
+        const mode = bgModeSelect.value;
+        const color1 = bgColorInput.value;
+        const color2 = bgColorInput2.value;
+
+        if (mode === 'solid') {
+            bgRect.setAttribute('fill', color1);
+            gradientColor2Group.style.display = 'none';
+        } else {
+            bgRect.setAttribute('fill', 'url(#bg-gradient)');
+            stop1.style.stopColor = color1;
+            stop2.style.stopColor = color2;
+            gradientColor2Group.style.display = 'block';
+        }
+    };
+
+    bgModeSelect.addEventListener('change', updateBackground);
+    bgColorInput.addEventListener('input', updateBackground);
+    bgColorInput2.addEventListener('input', updateBackground);
 
     // 랜덤 색상 버튼
     btnRandomColor.addEventListener('click', () => {
         const randomColor1 = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
         const randomColor2 = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
         
-        stop1.style.stopColor = randomColor1;
-        stop2.style.stopColor = randomColor2;
         bgColorInput.value = randomColor1;
+        bgColorInput2.value = randomColor2;
+        updateBackground();
     });
 
     // 모서리 라운드 실시간 반영
