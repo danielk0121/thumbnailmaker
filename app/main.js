@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const textInput = document.getElementById('text-input');
     const fontSizeInput = document.getElementById('font-size');
-    const fontSizeVal = document.getElementById('font-size-val');
     
     const bgColorInput = document.getElementById('bg-color');
     const btnRandomColor = document.getElementById('btn-random-color');
@@ -30,8 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // 글자 크기 실시간 반영
     fontSizeInput.addEventListener('input', (e) => {
         const size = e.target.value;
-        previewText.setAttribute('font-size', size);
-        fontSizeVal.textContent = size;
+        if (size > 0) {
+            previewText.setAttribute('font-size', size);
+        }
     });
 
     // 배경색 실시간 반영 (그라데이션 제거 후 단색으로 설정 가능하지만, 여기서는 그라데이션 첫번째 색상만 변경)
