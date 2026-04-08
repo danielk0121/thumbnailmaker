@@ -18,42 +18,42 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     background-color: var(--bg-main);
     color: var(--text-primary);
-    line-height: 1.5;
-    padding: 2rem;
+    line-height: 1.4;
+    padding: 1rem;
 }
 
 .container {
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
 header {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 header h1 {
-    font-size: 2.5rem;
+    font-size: 1.5rem;
     font-weight: 800;
 }
 
 main {
     display: grid;
-    grid-template-columns: 1fr 350px;
-    gap: 2rem;
+    grid-template-columns: 1fr 320px;
+    gap: 1rem;
     align-items: start;
 }
 
 /* 미리보기 영역 */
 .preview-section {
     background-color: var(--bg-card);
-    padding: 2rem;
+    padding: 1rem;
     border-radius: var(--radius);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 600px;
+    min-height: 500px;
     overflow: auto;
 }
 
@@ -69,13 +69,13 @@ main {
 #thumbnail-svg {
     display: block;
 }
-
-.res-input-group {
-    align-items: flex-end;
+.res-input-group button {
+    height: 32px;
+    margin-bottom: 0.5rem;
 }
 
 .font-size-control {
-    gap: 0.5rem;
+    gap: 0.25rem;
     align-items: center;
 }
 
@@ -86,7 +86,7 @@ main {
 
 .btn-group-sm {
     display: flex;
-    gap: 1px; /* 미세한 구분선 */
+    gap: 1px;
     background-color: var(--border);
     border: 1px solid var(--border);
     border-radius: 4px;
@@ -94,42 +94,38 @@ main {
 }
 
 .btn-group-sm button {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     padding: 0;
     border: none;
     border-radius: 0;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: bold;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+
 /* 컨트롤 패널 */
 .controls {
     background-color: var(--bg-card);
-    padding: 1.5rem;
+    padding: 1rem;
     border-radius: var(--radius);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     position: sticky;
-    top: 2rem;
+    top: 1rem;
 }
 
 .control-group {
-    margin-bottom: 1.5rem;
-    padding-bottom: 1.5rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
     border-bottom: 1px solid var(--border);
 }
 
-.control-group:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-}
-
 .control-group h3 {
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -137,10 +133,10 @@ main {
 
 label {
     display: block;
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     font-weight: 500;
     color: var(--text-secondary);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
 }
 
 input[type="text"],
@@ -148,18 +144,18 @@ input[type="number"],
 textarea,
 select {
     width: 100%;
-    padding: 0.6rem;
+    padding: 0.4rem 0.6rem;
     border: 1px solid var(--border);
     border-radius: 4px;
-    font-size: 1rem;
-    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
     background-color: white;
     font-family: inherit;
 }
 
 textarea {
     resize: vertical;
-    min-height: 80px;
+    min-height: 60px;
 }
 
 #gradient-color-2 {
@@ -189,20 +185,20 @@ input[type="range"] {
 }
 
 input[type="color"] {
-    width: 50px;
-    height: 40px;
+    width: 40px;
+    height: 32px;
     border: 1px solid var(--border);
     border-radius: 4px;
     cursor: pointer;
 }
 
 button {
-    padding: 0.6rem 1rem;
+    padding: 0.4rem 0.8rem;
     border: 1px solid var(--border);
     border-radius: 4px;
     background-color: white;
     cursor: pointer;
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     transition: all 0.2s;
     color: var(--text-primary);
 }
@@ -210,11 +206,12 @@ button {
 .btn-group {
     display: flex;
     gap: 0.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .btn-group button {
     flex: 1;
+    padding: 0.3rem;
 }
 
 .btn-group button.active {
