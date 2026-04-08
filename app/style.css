@@ -137,6 +137,13 @@ textarea {
 
 #gradient-color-2 {
     margin-top: 0.5rem;
+    transition: opacity 0.3s;
+}
+
+#gradient-color-2.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    filter: grayscale(1);
 }
 
 input[type="range"] {

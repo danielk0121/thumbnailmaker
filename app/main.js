@@ -120,12 +120,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (currentBgMode === 'solid') {
             bgRect.setAttribute('fill', color1);
-            gradientColor2Group.style.display = 'none';
+            gradientColor2Group.classList.add('disabled');
+            bgColorInput2.disabled = true;
+            btnRandomColor2.disabled = true;
         } else {
             bgRect.setAttribute('fill', 'url(#bg-gradient)');
             stop1.style.stopColor = color1;
             stop2.style.stopColor = color2;
-            gradientColor2Group.style.display = 'block';
+            gradientColor2Group.classList.remove('disabled');
+            bgColorInput2.disabled = false;
+            btnRandomColor2.disabled = false;
         }
     };
 
