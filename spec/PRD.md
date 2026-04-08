@@ -24,6 +24,7 @@
 - **Markup**: HTML5, SVG (Scalable Vector Graphics)
 - **Styling**: Vanilla CSS (CSS3)
 - **Directory**: `app/` 폴더 내 모든 소스 코드 관리
+- **Deployment**: **GitHub Pages** (app/index.html 직접 공개)
 
 ## 4. 폴더 구조 계획
 - `app/index.html`: 메인 구조 및 UI
