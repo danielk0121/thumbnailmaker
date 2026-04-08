@@ -42,24 +42,57 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnExportJpg = document.getElementById('btn-export-jpg');
     const btnExportSvg = document.getElementById('btn-export-svg');
 
-    // 텍스트 실시간 반영 및 다중 행 처리
+    // 텍스트 실시간 반영 및 다중 행 처리 (자동 줄바꿈 포함)
     const updateText = () => {
-        const lines = textInput.value.split('\n');
+        const fullText = textInput.value;
         const fontSize = parseInt(fontSizeInput.value) || 0;
         const lineHeight = 1.2;
+        const svgWidth = parseInt(svg.getAttribute('width')) || 400;
+        const maxWidth = svgWidth * 0.9; // 양옆 5%씩 여백
+        
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.font = `bold ${fontSize}px sans-serif`;
+
+        // 1. 수동 줄바꿈(\n) 처리
+        const manualLines = fullText.split('\n');
+        const finalLines = [];
+
+        // 2. 각 줄에 대해 자동 줄바꿈 처리
+        manualLines.forEach(line => {
+            if (!line.trim()) {
+                finalLines.push(' ');
+                return;
+            }
+
+            let currentLine = '';
+            // 한글/영문 대응을 위해 글자 단위로 쪼개서 체크
+            const chars = Array.from(line); 
+
+            chars.forEach((char, i) => {
+                const testLine = currentLine + char;
+                const metrics = ctx.measureText(testLine);
+                const testWidth = metrics.width;
+
+                if (testWidth > maxWidth && i > 0) {
+                    finalLines.push(currentLine);
+                    currentLine = char;
+                } else {
+                    currentLine = testLine;
+                }
+            });
+            finalLines.push(currentLine);
+        });
         
         previewText.innerHTML = '';
         
-        lines.forEach((line, index) => {
+        finalLines.forEach((line, index) => {
             const tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-            tspan.textContent = line || ' '; // 빈 줄 방지
+            tspan.textContent = line;
             tspan.setAttribute('x', '50%');
             
-            // 수직 중앙 정렬 보정: 
-            // 첫 번째 줄의 dy를 전체 높이의 절반만큼 위로 올리고, 
-            // 이후 줄은 lineHeight만큼 내림
             if (index === 0) {
-                const totalHeightOffset = (lines.length - 1) * fontSize * lineHeight / 2;
+                const totalHeightOffset = (finalLines.length - 1) * fontSize * lineHeight / 2;
                 tspan.setAttribute('dy', `-${totalHeightOffset}px`);
             } else {
                 tspan.setAttribute('dy', `${fontSize * lineHeight}px`);
