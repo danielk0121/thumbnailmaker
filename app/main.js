@@ -312,6 +312,51 @@ document.addEventListener('DOMContentLoaded', () => {
     btnExportJpg.addEventListener('click', () => exportImage('jpg'));
     btnExportSvg.addEventListener('click', exportSvg);
 
+    // 클립보드 복사
+    const btnCopyClipboard = document.getElementById('btn-copy-clipboard');
+    btnCopyClipboard.addEventListener('click', () => {
+        try {
+            const svgElement = svg.cloneNode(true);
+            const style = document.createElement('style');
+            style.textContent = `
+                text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: bold; }
+                tspan { alignment-baseline: central; }
+            `;
+            svgElement.prepend(style);
+
+            const svgData = new XMLSerializer().serializeToString(svgElement);
+            const encodedData = btoa(unescape(encodeURIComponent(svgData)));
+            const dataUri = 'data:image/svg+xml;base64,' + encodedData;
+
+            const w = parseInt(svg.getAttribute('width')) || 400;
+            const h = parseInt(svg.getAttribute('height')) || 400;
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+
+            img.onload = () => {
+                ctx.drawImage(img, 0, 0, w, h);
+                canvas.toBlob(blob => {
+                    navigator.clipboard.write([
+                        new ClipboardItem({ 'image/png': blob })
+                    ]).then(() => {
+                        alert('클립보드에 복사되었습니다.');
+                    }).catch(err => {
+                        console.error('[오류] 클립보드 복사 실패:', err);
+                        alert('클립보드 복사에 실패했습니다. 브라우저 또는 환경이 지원하지 않을 수 있습니다.');
+                    });
+                }, 'image/png');
+            };
+
+            img.onerror = () => alert('이미지 변환 중 오류가 발생했습니다.');
+            img.src = dataUri;
+        } catch (err) {
+            console.error('[오류] 클립보드 복사 중 예외 발생:', err);
+        }
+    });
+
     // 초기 실행
     textInput.value = '썸네일\n글자를\n입력하세요';
     updateText();
